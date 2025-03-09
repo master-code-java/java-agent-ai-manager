@@ -36,6 +36,11 @@ public class Project {
         return agents;
     }
 
+    
+    public void setAgents(LinkedList<Agent> agents2) {
+        this.agents = agents2;
+    }
+
     public void addAgent(Agent agent) {
         agents.add(agent);
     }
@@ -62,4 +67,5 @@ public class Project {
             uuid = UUID.randomUUID();
         }
     }
+
 }
