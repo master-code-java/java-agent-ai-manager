@@ -33,8 +33,10 @@ public class Agent {
     private Long id;
     
     @Column(nullable = false, unique = true)
-    private UUID uuid;
+    @Schema(hidden = true)
+    private String uuid;
     
+    @Column(columnDefinition = "TEXT")
     private String context;
     private String description;
     
@@ -52,7 +54,7 @@ public class Agent {
     @PrePersist
     public void prePersist() {
         if (uuid == null) {
-            uuid = UUID.randomUUID();
+            uuid = UUID.randomUUID().toString();
         }
     }
 }

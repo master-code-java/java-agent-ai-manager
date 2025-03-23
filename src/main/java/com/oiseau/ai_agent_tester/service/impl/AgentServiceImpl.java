@@ -29,7 +29,7 @@ public class AgentServiceImpl implements AgentService {
 
     @Override
     public Agent createAgent(Agent agent) {
-        agent.setUuid(UUID.randomUUID());
+        agent.setUuid(UUID.randomUUID().toString());
         return agentRepository.save(agent);
     }
 
