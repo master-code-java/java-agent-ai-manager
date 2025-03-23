@@ -1,6 +1,7 @@
 package com.oiseau.ai_agent_tester.controller;
 
 import com.oiseau.ai_agent_tester.model.Project;
+import com.oiseau.ai_agent_tester.request.ProjectRequest;
 import com.oiseau.ai_agent_tester.service.ProjectService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
@@ -26,10 +27,10 @@ public class ProjectController {
         Optional<Project> project = projectService.getProjectById(id);
         return project.map(ResponseEntity::ok).orElseGet(() -> ResponseEntity.notFound().build());
     }
-
+    
     @PostMapping
-    public Project createProject(@RequestBody Project project) {
-        return projectService.createProject(project);
+    public Project createProjectRequest(@RequestBody ProjectRequest request) {
+        return projectService.createProject(request);
     }
 
     @PutMapping("/{id}")
