@@ -2,7 +2,9 @@ package com.oiseau.ai_agent_tester.controller;
 
 import com.oiseau.ai_agent_tester.model.Project;
 import com.oiseau.ai_agent_tester.request.ProjectRequest;
+import com.oiseau.ai_agent_tester.response.ProjectExecutionResponse;
 import com.oiseau.ai_agent_tester.service.ProjectService;
+import io.swagger.v3.oas.annotations.Parameter;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -46,5 +48,14 @@ public class ProjectController {
         } else {
             return ResponseEntity.notFound().build();
         }
+    }
+
+    @PostMapping("/{uuid}/run")
+    public ResponseEntity<ProjectExecutionResponse> runProject(
+            @Parameter(description = "The UUID of the project to run") @PathVariable String uuid,
+            @RequestParam("input") String input) {
+        ProjectExecutionResponse response = projectService.runProject(uuid, input);
+        
+        return ResponseEntity.ok().body(response);
     }
 }

@@ -8,4 +8,6 @@ import com.oiseau.ai_agent_tester.model.Agent;
 public interface OpenAiService {
 
     String getPersonalizedResponse(Agent agent);
+
+    String getResponse(String context, String input);
 }

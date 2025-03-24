@@ -5,11 +5,15 @@ import com.oiseau.ai_agent_tester.model.Project;
 import com.oiseau.ai_agent_tester.repository.AgentRepository;
 import com.oiseau.ai_agent_tester.repository.ProjectRepository;
 import com.oiseau.ai_agent_tester.request.ProjectRequest;
+import com.oiseau.ai_agent_tester.response.OpenAiResponse;
+import com.oiseau.ai_agent_tester.response.ProjectExecutionResponse;
+import com.oiseau.ai_agent_tester.service.OpenAiService;
 import com.oiseau.ai_agent_tester.service.ProjectService;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 import java.util.UUID;
@@ -22,6 +26,9 @@ public class ProjectServiceImpl implements ProjectService {
 
     @Autowired
     private AgentRepository agentRepository;
+
+    @Autowired
+    private OpenAiService openAiService;
 
     @Override
     public List<Project> getAllProjects() {
@@ -74,5 +81,36 @@ public class ProjectServiceImpl implements ProjectService {
         newProject.setAgents(agents);
 
         return projectRepository.save(newProject);
+    }
+
+    @Override
+    public ProjectExecutionResponse runProject(String uuid, String input) {
+
+        List<OpenAiResponse> openAIResponses = new ArrayList<>();
+
+        projectRepository.findByUuid(uuid).ifPresent(project -> {
+            String currentInput = input;
+            for (Agent agent : project.getAgents()) {
+                String response = openAiService.getResponse(agent.getContext(), currentInput);
+                currentInput = extractContentFromResponse(response);
+
+                openAIResponses.add(new OpenAiResponse(uuid, agent.getContext(), currentInput));
+            
+            }
+
+        });
+        
+
+        return new ProjectExecutionResponse(UUID.randomUUID().toString(), input, openAIResponses);
+    }
+
+    private String extractContentFromResponse(String response) {
+        try {
+            com.fasterxml.jackson.databind.JsonNode jsonNode = 
+                new com.fasterxml.jackson.databind.ObjectMapper().readTree(response);
+            return jsonNode.path("choices").get(0).path("message").path("content").asText();
+        } catch (Exception e) {
+            throw new RuntimeException("Failed to parse OpenAI response", e);
+        }
     }
 }
