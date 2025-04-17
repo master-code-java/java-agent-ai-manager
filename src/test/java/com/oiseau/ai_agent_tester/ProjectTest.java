@@ -23,25 +23,19 @@ class Agent{
 
 class Project{
 
-	private String input;
-	private List<Agent> agents = new ArrayList<>();
+	private String initialInput;
 	private List<AgentSequence> sequence = new ArrayList<>();
 
 	OpenAiService openAiService = new OpenAiService();
 
 
-	Project(String input, List<Agent> agents, List<AgentSequence> sequence){
-		this.agents = agents;
-		this.input = input;
+	Project(String input, List<AgentSequence> sequence){
+		this.initialInput = input;
 		this.sequence = sequence;
 	}
 
-	public String getInput() {
-		return input;
-	}
-
-	public List<Agent> getAgents() {
-		return agents;
+	public String getInitialInput() {
+		return initialInput;
 	}
 
 	public List<AgentSequence> getSequence() {
@@ -50,7 +44,7 @@ class Project{
 
 	public List<ResponseExecution> run(){
 		List<ResponseExecution> responseExecutions = new ArrayList<>();
-		String[] currentInput = { this.input };
+		String[] currentInput = { this.initialInput };
 
 		this.sequence.stream()
 			.sorted((o1, o2) -> Integer.compare(o1.getPosition(), o2.getPosition()))
@@ -154,17 +148,12 @@ class ProjectTest {
 		Agent a2 = new Agent("Voce traduz para Ingles");
 		Agent a3 = new Agent("Voce traduz para Frances");
 
-		List<Agent> agents = new ArrayList<>();
-		agents.add(a1);		
-		agents.add(a2);
-		agents.add(a3);
-
 		List<AgentSequence> sequence = new ArrayList<>();
 		sequence.add(new AgentSequence(1, a1));
 		sequence.add(new AgentSequence(2,a2));
 		sequence.add(new AgentSequence(3, a3));
 		
-		Project p1 = new Project("Ola", agents, sequence);
+		Project p1 = new Project("Ola", sequence);
 
 		List<ResponseExecution> result = p1.run();
 
@@ -196,17 +185,12 @@ class ProjectTest {
 		Agent a2 = new Agent("Voce traduz para Ingles");;
 		Agent a3 = new Agent("Voce traduz para Frances");
 
-		List<Agent> agents = new ArrayList<>();
-		agents.add(a1);		
-		agents.add(a2);
-		agents.add(a3);
-
 		List<AgentSequence> sequence = new ArrayList<>();
 		sequence.add(new AgentSequence(3, a3));
 		sequence.add(new AgentSequence(2,a2));
 		sequence.add(new AgentSequence(1, a1));
 
-		Project p1 = new Project("Ola", agents, sequence);
+		Project p1 = new Project("Ola", sequence);
 
 		List<ResponseExecution> result = p1.run();
 
@@ -237,17 +221,12 @@ class ProjectTest {
 		Agent a2 = new Agent("Voce traduz para Ingles");
 		Agent a3 = new Agent("Voce traduz para Frances");
 
-		List<Agent> agents = new ArrayList<>();
-		agents.add(a3);		
-		agents.add(a2);
-		agents.add(a1);
-
 		List<AgentSequence> sequence = new ArrayList<>();
 		sequence.add(new AgentSequence(1, a1));
 		sequence.add(new AgentSequence(2,a2));
 		sequence.add(new AgentSequence(3, a3));
 
-		Project p1 = new Project("Ola", agents, sequence);
+		Project p1 = new Project("Ola", sequence);
 
 		List<ResponseExecution> result = p1.run();
 
