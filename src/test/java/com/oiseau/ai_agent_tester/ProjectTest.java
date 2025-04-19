@@ -5,7 +5,12 @@ import static org.junit.jupiter.api.Assertions.assertAll;
 import java.util.ArrayList;
 import java.util.List;
 
-import org.junit.jupiter.api.*;;
+import org.junit.jupiter.api.*;
+
+import com.oiseau.ai_agent_tester.interfaces.NaturalLanguage;
+import com.oiseau.ai_agent_tester.interfaces.SequencialExecution;
+import com.oiseau.ai_agent_tester.responses.ResponseExecution;
+import com.oiseau.ai_agent_tester.model.AgentSequence;
 
 class NaturalLanguageAgent implements NaturalLanguage{
 
@@ -31,25 +36,7 @@ class NaturalLanguageAgent implements NaturalLanguage{
 	}
 }
 
-interface Agent{
-	void context(String context);
-	String getContext();
-	String getType();
-
-}
-
-interface NaturalLanguage extends Agent{
-
-}
-
-interface Execution{}
-
-interface SequencialExecution extends Execution {
-	List<ResponseExecution> run(String input, List<AgentSequence> sequence);
-
-}
-
-class Project implements SequencialExecution{
+class MyProject implements SequencialExecution{
 
 	/* for mock purpose only */
 	OpenAiService openAiService = new OpenAiService();
@@ -70,43 +57,9 @@ class Project implements SequencialExecution{
 		return responseExecutions;
 
 	}
-
 }
 
-class ResponseExecution{
-	private int position;
-	private String context;
-	private String input;
-	private String response;
 
-	ResponseExecution(int position, String context, String input, String response){
-		this.position = position;
-		this.context = context;
-		this.input = input;
-		this.response = response;
-	}
-
-	public int getPosition() {
-		return position;
-	}
-
-	public String getContext() {
-		return context;
-	}
-
-	public String getInput() {
-		return input;
-	}
-
-	public String getResponse() {
-		return response;
-	}
-
-	@Override
-	public String toString() {
-		return "ResponseExecution [position=" + position + ", context=" + context + ", input=" + input + ", response=" + response + "]";
-	}
-}
 
 class OpenAiService{
 	public String getResponse(String context, String input){
@@ -127,31 +80,6 @@ class OpenAiService{
 	}
 }
 
-class AgentSequence{
-	
-	private int position;
-	private Agent agent;
-
-	AgentSequence(int position, Agent agent){
-		this.position = position;
-		this.agent = agent;
-	}
-	public int getPosition() {
-		return position;
-	}
-
-	public Agent getAgent() {
-		return agent;
-	}
-
-	@Override
-	public String toString() {
-		return "AgentSequence [position=" + position + ", agent=" + agent.getContext() + "]";
-	}
-
-	
-}
-
 class ProjectTest {
 
 	@Test
@@ -170,7 +98,7 @@ class ProjectTest {
 		sequence.add(new AgentSequence(2,nlp2));
 		sequence.add(new AgentSequence(3, nlp3));
 		
-		Project p1 = new Project();
+		MyProject p1 = new MyProject();
 		List<ResponseExecution> result = p1.run("Ola", sequence);
 
 		assertAll("", () -> {
@@ -211,7 +139,7 @@ class ProjectTest {
 		sequence.add(new AgentSequence(1,nlp1));
 		sequence.add(new AgentSequence(2, nlp2));
 
-		Project p1 = new Project();
+		MyProject p1 = new MyProject();
 		List<ResponseExecution> result = p1.run("Ola", sequence);
 
 		assertAll("", () -> {
