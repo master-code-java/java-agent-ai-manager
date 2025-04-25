@@ -54,8 +54,26 @@ public class Agent implements NaturalLanguage {
     @PrePersist
     public void prePersist() {
         if (uuid == null) {
-            uuid = UUID.randomUUID();
+            uuid = UUID.randomUUID().toString();
         }
+    }
+
+    @Override
+    public void context(String context) {
+        this.context = context;
+    
+    }
+
+    @Override
+    public String getType() {
+       return NATURAL_LANGUAGE;
+    
+    }
+
+    @Override
+    public String getContext() {
+        return this.context;
+    
     }
 
     @Override
