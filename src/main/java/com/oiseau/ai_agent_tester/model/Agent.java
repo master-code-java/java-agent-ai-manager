@@ -38,7 +38,7 @@ public class Agent implements NaturalLanguage {
     private Long id;
     
     @Column(nullable = false, unique = true)
-    private UUID uuid;
+    private String uuid;
         
     @Column(nullable = false)
     private String name;
@@ -59,12 +59,6 @@ public class Agent implements NaturalLanguage {
     }
 
     @Override
-    public void context(String context) {
-        this.context = context;
-    
-    }
-
-    @Override
     public String getType() {
        return NATURAL_LANGUAGE;
     
@@ -82,15 +76,4 @@ public class Agent implements NaturalLanguage {
     
     }
 
-    @Override
-    public String getType() {
-       return NATURAL_LANGUAGE;
-    
-    }
-
-    @Override
-    public String getContext() {
-        return this.context;
-    
-    }
 }
