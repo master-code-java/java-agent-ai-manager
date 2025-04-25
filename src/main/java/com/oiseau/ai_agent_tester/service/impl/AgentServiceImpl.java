@@ -8,7 +8,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
-import java.util.Optional;
 import java.util.UUID;
 
 @Service
@@ -23,33 +22,9 @@ public class AgentServiceImpl implements AgentService {
     }
 
     @Override
-    public Optional<Agent> getAgentById(Long id) {
-        return agentRepository.findById(id);
-    }
-
-    @Override
     public Agent createAgent(Agent agent) {
         agent.setUuid(UUID.randomUUID().toString());
         return agentRepository.save(agent);
     }
 
-    @Override
-    public Optional<Agent> updateAgent(Long id, Agent agentDetails) {
-        return agentRepository.findById(id).map(agent -> {
-            agent.setName(agentDetails.getName());
-            agent.setContext(agentDetails.getContext());
-            agent.setDescription(agentDetails.getDescription());
-            return agentRepository.save(agent);
-        });
-    }
-
-    @Override
-    public boolean deleteAgent(Long id) {
-        if (agentRepository.existsById(id)) {
-            agentRepository.deleteById(id);
-            return true;
-        } else {
-            return false;
-        }
-    }
 }

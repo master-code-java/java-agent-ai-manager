@@ -19,13 +19,18 @@ import jakarta.persistence.PrePersist;
 import java.time.LocalDateTime;
 import java.util.UUID;
 
+import com.oiseau.ai_agent_tester.interfaces.NaturalLanguage;
+
 @Data
 @Builder
 @NoArgsConstructor
 @AllArgsConstructor
 @EqualsAndHashCode
 @Entity
-public class Agent {
+public class Agent implements NaturalLanguage {
+
+    private static final String NATURAL_LANGUAGE = "NaturalLanguage";
+    private String context;
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -33,13 +38,8 @@ public class Agent {
     private Long id;
     
     @Column(nullable = false, unique = true)
-    @Schema(hidden = true)
     private String uuid;
-    
-    @Column(columnDefinition = "TEXT")
-    private String context;
-    private String description;
-    
+        
     @Column(nullable = false)
     private String name;
     
@@ -57,4 +57,23 @@ public class Agent {
             uuid = UUID.randomUUID().toString();
         }
     }
+
+    @Override
+    public String getType() {
+       return NATURAL_LANGUAGE;
+    
+    }
+
+    @Override
+    public String getContext() {
+        return this.context;
+    
+    }
+
+    @Override
+    public void context(String context) {
+        this.context = context;
+    
+    }
+
 }
