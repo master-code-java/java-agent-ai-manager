@@ -1,7 +1,7 @@
 
 package com.oiseau.ai_agent_tester.service;
 
-import com.oiseau.ai_agent_tester.model.Agent;
+import com.oiseau.ai_agent_tester.model.NaturalLanguageAgent;
 
 import java.util.List;
 
@@ -15,8 +15,8 @@ public interface AgentService {
      *
      * @return a list of all agents
      */
-    List<Agent> getAllAgents();
+    List<NaturalLanguageAgent> getAllAgents();
 
-    Agent createAgent(Agent agent);
+    NaturalLanguageAgent createAgent(NaturalLanguageAgent agent);
 
     }

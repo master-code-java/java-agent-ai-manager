@@ -1,8 +1,6 @@
 package com.oiseau.ai_agent_tester.responses;
 
-import org.springframework.stereotype.Component;
 
-@Component
 public class ResponseExecution{
 	private int position;
 	private String context;
