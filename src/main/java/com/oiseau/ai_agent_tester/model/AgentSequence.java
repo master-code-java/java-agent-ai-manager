@@ -1,23 +1,30 @@
 package com.oiseau.ai_agent_tester.model;
-import com.oiseau.ai_agent_tester.interfaces.Agent;
 
+import io.swagger.v3.oas.annotations.media.Schema;
 import jakarta.persistence.Entity;
+import jakarta.persistence.GeneratedValue;
+import jakarta.persistence.GenerationType;
+import jakarta.persistence.Id;
+import jakarta.persistence.OneToOne;
 import lombok.AllArgsConstructor;
 import lombok.Data;
+import lombok.EqualsAndHashCode;
+import lombok.NoArgsConstructor;
 
 
-@Entity
 @Data
+@NoArgsConstructor
 @AllArgsConstructor
+@EqualsAndHashCode
+@Entity
 public class AgentSequence{
 	
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @Schema(hidden = true)
+    private Long id;
 	private int position;
+	@OneToOne
 	private Agent agent;
-
-	@Override
-	public String toString() {
-		return "AgentSequence [position=" + position + ", agent=" + agent.getContext() + "]";
-	}
-
 	
 }

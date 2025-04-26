@@ -1,7 +1,6 @@
 package com.oiseau.ai_agent_tester.service;
 
 import com.oiseau.ai_agent_tester.model.Project;
-import com.oiseau.ai_agent_tester.request.ProjectRequest;
 import com.oiseau.ai_agent_tester.response.ProjectExecutionResponse;
 
 import java.util.List;
@@ -15,11 +14,5 @@ public interface ProjectService {
 
     Project createProject(Project project);
 
-    Project createProject(ProjectRequest project);
-
-    Optional<Project> updateProject(int id, Project projectDetails);
-
-    boolean deleteProject(int id);
-
-    ProjectExecutionResponse runProject(String uuid, String input);
+    ProjectExecutionResponse runProject(int project, String input);
 }
